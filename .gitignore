@@ -3,3 +3,10 @@ agenticmindz
 
 .DS_Store 
 backup.zip
+server.js
+.env
+node_modules
+package-lock.json
+package.json
+
+backup.zip
