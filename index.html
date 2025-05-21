@@ -32,6 +32,107 @@
     <link href="assets/css/responsive.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom styles for video section -->
+    <style>
+        .company-video-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        .company-video-section:before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(0, 123, 255, 0.05);
+            z-index: 0;
+        }
+        .company-video-section:after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(0, 123, 255, 0.05);
+            z-index: 0;
+        }
+        .company-video-section .section-title {
+            position: relative;
+            z-index: 1;
+        }
+        .company-video-section h5 {
+            color: #4361ee;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .company-video-section h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #212529;
+        }
+        .company-video-section p {
+            color: #495057;
+        }
+        .video-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .ratio {
+            position: relative;
+            width: 100%;
+        }
+        .ratio::before {
+            display: block;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            content: "";
+        }
+        .ratio > * {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .video-wrapper::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            bottom: -15px;
+            left: -15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            z-index: -1;
+        }
+        .video-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 20px;
+            right: -40px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.1);
+            z-index: -1;
+        }
+        @media (max-width: 768px) {
+            .company-video-section {
+                padding: 50px 0;
+            }
+            .company-video-section h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -103,6 +204,25 @@
     </figure>   
 </section>
 </div>
+<!-- Company Video Section -->
+<section class="company-video-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-12">
+                <div class="section-title text-center mb-4" data-aos="fade-up">
+                    <h5>Unlock The Potential</h5>
+                    <h2>Your Data: The Untapped Gold Mine</h2>
+                    <p class="text-size-18 mt-3">See how we help visionary businesses transform raw information into powerful AI solutions that drive growth and competitive advantage.</p>
+                </div>
+                <div class="video-wrapper" data-aos="fade-up">
+                    <div class="ratio ratio-16x9" style="border-radius: 15px; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.15);">
+                        <iframe src="https://www.youtube.com/embed/27R212oCHjc?autoplay=1&mute=1&rel=0" title="AgenticMindz Company Profile" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- About us -->
 <section class="about-section">
     <div class="container">
@@ -687,5 +807,47 @@
 <script src="assets/js/custom.js"></script>
 <script src="assets/js/animation_links.js"></script>
 <script src="assets/js/animation.js"></script>
+<script>
+// Video section enhancements
+$(document).ready(function() {
+    // Apply a smooth fade-in effect to the video section when it enters viewport
+    $(window).scroll(function() {
+        var videoSection = $('.company-video-section');
+        var videoPosition = videoSection.offset().top;
+        var screenPosition = $(window).scrollTop() + $(window).height();
+        
+        if (screenPosition > videoPosition + 200) {
+            videoSection.addClass('visible');
+        }
+    });
+    
+    // Also apply the AJAX form submission for this form as well
+    $('#contactpage, #contactpage1').on('submit', function(e) {
+        e.preventDefault();
+        var form = $(this);
+        var formData = form.serialize();
+        var submitBtn = form.find('button[type="submit"]');
+        var originalBtnText = submitBtn.html();
+        submitBtn.prop('disabled', true).html('Submitting your request...');
+        // Remove any previous status
+        form.find('.form-status').remove();
+        $.ajax({
+            url: form.attr('action'),
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                // Show success message
+                form[0].reset();
+                submitBtn.prop('disabled', false).html(originalBtnText);
+                form.prepend('<div class="form-status alert alert-success mt-3">Request submitted. Our representative will connect with you soon!</div>');
+            },
+            error: function() {
+                submitBtn.prop('disabled', false).html(originalBtnText);
+                form.prepend('<div class="form-status alert alert-danger mt-3">There was an error submitting your request. Please try again later.</div>');
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
